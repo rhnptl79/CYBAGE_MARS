@@ -1,5 +1,7 @@
 package com.example.marsapp;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -8,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -16,6 +19,7 @@ import android.widget.TextView;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.UUID;
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -94,6 +98,73 @@ public class SignupActivity extends AppCompatActivity {
 
             choosePhotoHelper.showChooser();
         });
+    }
+
+    private void storagePics() {
+
+        loading_view.setVisibility(View.VISIBLE);
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageReference = storage.getReference();
+        Uri filePath = Uri.fromFile(new File(imagePath));
+        StorageReference ref = storageReference.child("images/" + UUID.randomUUID().toString());
+        ref.putFile(filePath).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                showToast("Image Uploaded");
+                ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        pathImageFirebase = uri.toString();
+                        addUserInfoToFirebase(EncodeString(et_email.getText().toString()));
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        showToast("Image uploading Failed!!");
+                        Log.d("ImageUPload22", e.getMessage());
+
+                        loading_view.setVisibility(View.GONE);
+
+                        pathImageFirebase = imagePath;
+                        addUserInfoToFirebase(EncodeString(et_email.getText().toString()));
+                    }
+                });
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("ImageUPload", e.getMessage());
+                loading_view.setVisibility(View.GONE);
+                pathImageFirebase = imagePath;
+                addUserInfoToFirebase(EncodeString(et_email.getText().toString()));
+//                storagePics();
+            }
+        });
 
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        choosePhotoHelper.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (choosePhotoHelper != null)
+            choosePhotoHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+
+
+
+
+
+
+
+
+
+
 }
