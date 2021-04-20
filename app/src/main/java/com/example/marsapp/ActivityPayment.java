@@ -23,6 +23,7 @@ import static android.view.View.VISIBLE;
 public class ActivityPayment extends AppCompatActivity implements PaymentMethodNonceCreatedListener,
         BraintreeCancelListener, BraintreeErrorListener, DropInResult.DropInResultListener{
 
+
     private static final int DROP_IN_REQUEST = 100;
 
     private static final String KEY_NONCE = "nonce";
