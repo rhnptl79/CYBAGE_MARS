@@ -11,7 +11,12 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Arrays;
+
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -103,7 +108,52 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
+    private void startCustomerActivity() {
+        Intent intent = new Intent(LoginActivity.this, CourseListActivity.class);
+        intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finishAffinity();
 
+    }
+
+    private void signIn() {
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, 102);
+    }
+
+    private void getFbInfo(AccessToken accessToken) {
+        GraphRequest request = GraphRequest.newMeRequest(
+                accessToken.getCurrentAccessToken(),
+                new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(
+                            JSONObject object,
+                            GraphResponse response) {
+                        try {
+                            Log.d("LOG_TAG", "fb json object: " + object);
+                            Log.d("LOG_TAG", "fb graph response: " + response);
+
+                            String id = object.getString("id");
+                            String first_name = object.getString("first_name");
+                            String last_name = object.getString("last_name");
+                            String image_url = "http://graph.facebook.com/" + id + "/picture?type=large";
+
+                            preferences.saveString(MyPreferences.USER_NAME,first_name+ " "+last_name);
+                            String email;
+                            if (object.has("email")) {
+                                email = object.getString("email");
+                            }
+                            addCourse();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+        Bundle parameters = new Bundle();
+        parameters.putString("fields", "id,first_name,last_name,email,gender,birthday"); // id,first_name,last_name,email,gender,birthday,cover,picture.type(large)
+        request.setParameters(parameters);
+        request.executeAsync();
+    }
 
 
 
