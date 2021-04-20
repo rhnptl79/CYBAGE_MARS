@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
+
 public class ActivityPayment extends AppCompatActivity implements PaymentMethodNonceCreatedListener,
         BraintreeCancelListener, BraintreeErrorListener, DropInResult.DropInResultListener{
 
