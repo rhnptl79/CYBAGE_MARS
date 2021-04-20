@@ -155,6 +155,35 @@ public class LoginActivity extends AppCompatActivity {
         request.executeAsync();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 102) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            handleSignInResult(task);
+
+        } else {
+            callbackManager.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        try {
+            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+
+            preferences.saveString(MyPreferences.USER_NAME,account.getDisplayName());
+
+            addCourse();
+            // Signed in successfully, show authenticated UI.
+//            updateUI(account);
+        } catch (ApiException e) {
+            // The ApiException status code indicates the detailed failure reason.
+            // Please refer to the GoogleSignInStatusCodes class reference for more information.
+            Log.w("TAG", "signInResult:failed code=" + e.getStatusCode());
+//            updateUI(null);
+        }
+    }
+
 
 
 
