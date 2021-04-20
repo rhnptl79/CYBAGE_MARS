@@ -16,9 +16,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.UUID;
 
 public class SignupActivity extends AppCompatActivity {
@@ -157,14 +160,52 @@ public class SignupActivity extends AppCompatActivity {
             choosePhotoHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
+    private void addUserInfoToFirebase(String child) {
+        DatabaseReference firebaseDatabase = FirebaseDatabase.getInstance().getReference();
+        ArrayList<UserData> userList = new ArrayList<>();
+        iStatus = false;
 
+        firebaseDatabase.child(Constants.DB_USER_TABLE).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot snap : snapshot.getChildren()) {
+                    HashMap<String, String> users = new HashMap();
+                    users = (HashMap<String, String>) snap.getValue();
+//                    String  s= users.get(0).get("dd");
+                    UserData userData = new UserData(users.get("strImagePath"), users.get("firstName"), users.get("lastName"), users.get("email"), users.get("password"));
+                    userList.add(userData);
+                    if (userData.getEmail() != null) {
+                        if (userData.getEmail().equals(et_email.getText().toString())) {
+                            showToast("Email already exist");
+                            iStatus = true;
+                        }
+                    }
+                }
+                if (!iStatus) {
+                    ArrayList<Integer> list=new ArrayList();
 
+                    firebaseDatabase.child(Constants.DB_USER_TABLE).child(child).child("firstName").setValue(et_f_name.getText().toString());
+                    firebaseDatabase.child(Constants.DB_USER_TABLE).child(child).child("lastName").setValue(et_l_name.getText().toString());
+                    firebaseDatabase.child(Constants.DB_USER_TABLE).child(child).child("email").setValue(et_email.getText().toString());
+                    firebaseDatabase.child(Constants.DB_USER_TABLE).child(child).child("password").setValue(et_password.getText().toString());
+                    firebaseDatabase.child(Constants.DB_USER_TABLE).child(child).child("strImagePath").setValue(pathImageFirebase);
+                    firebaseDatabase.child(Constants.DB_USER_TABLE).child(child).child("purchasedCourse").setValue(list);
+                    Toast.makeText(SignupActivity.this,"Signup Successfully!!",Toast.LENGTH_SHORT).show();
+                    finish();
+                }
 
+                loading_view.setVisibility(View.GONE);
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
+            }
+        });
+    }
 
-
-
-
+    private void showToast(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    }
 
 }
