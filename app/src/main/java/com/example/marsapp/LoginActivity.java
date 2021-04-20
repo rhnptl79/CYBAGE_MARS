@@ -1,5 +1,6 @@
 package com.example.marsapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -14,7 +15,10 @@ import android.widget.TextView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 
@@ -182,6 +186,68 @@ public class LoginActivity extends AppCompatActivity {
             Log.w("TAG", "signInResult:failed code=" + e.getStatusCode());
 //            updateUI(null);
         }
+    }
+
+    private void signinUser(String child) {
+        loading_view.setVisibility(View.VISIBLE);
+        DatabaseReference firebaseDatabase = FirebaseDatabase.getInstance().getReference();
+        ArrayList<UserData> userList = new ArrayList<>();
+        iStatus = false;
+
+        firebaseDatabase.child(Constants.DB_USER_TABLE).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot snap : snapshot.getChildren()) {
+                    HashMap<String, String> users = new HashMap();
+                    users = (HashMap<String, String>) snap.getValue();
+                    UserData userData = new UserData(users.get("strImagePath"), users.get("firstName"), users.get("lastName"), users.get("email"), users.get("password"));
+
+                    Gson gson = new Gson();
+                    String s=gson.toJson(users.get("purchasedCourse"));
+                    Type type = new TypeToken<ArrayList<CourseData>>() {}.getType();
+                    ArrayList<CourseData> arrayList = gson.fromJson(s, type);
+                    userData.setCourseList(arrayList);
+
+                    userList.add(userData);
+                    if (userData.getEmail() != null) {
+                        if (userData.getEmail().equals(et_name.getText().toString()) && userData.getPassword().equals(et_password.getText().toString())) {
+                            iStatus = true;
+                            preferences.saveString(MyPreferences.USER_NAME,userData.getFirstName()+" "+userData.getLastName());
+                            preferences.saveString(MyPreferences.Email,userData.getEmail());
+                            preferences.saveString(MyPreferences.LOGIN_USER_DATA,new Gson().toJson(userData));
+                        }
+                    }
+                }
+                if (iStatus) {
+                    showToast("Login successfully!");
+
+                    addCourse();
+
+                } else {
+                    showToast("Email or Password is incorrect");
+                }
+
+                loading_view.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+                loading_view.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    private void addCourse() {
+        DatabaseHandler handler = new DatabaseHandler(this);
+        handler.addCourse(new CourseData(1, "CSS", true, "$90"));
+        handler.addCourse(new CourseData(2, "HTML", true, "$200"));
+        handler.addCourse(new CourseData(3, "JAVA", true, "$50"));
+        handler.addCourse(new CourseData(4, "JAVA SCRIPT", true, "$250"));
+        handler.addCourse(new CourseData(5, "MY SQL DATABASE", true, "$150"));
+        handler.addCourse(new CourseData(6, "PHP", false, "Free"));
+//        startActivity(new Intent(LoginActivity.this,CourseListActivity.class));
+        addCourseVideo();
     }
 
 
