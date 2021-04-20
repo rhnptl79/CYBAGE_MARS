@@ -1,9 +1,11 @@
 package com.example.marsapp;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -11,6 +13,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import static android.view.View.GONE;
@@ -280,4 +283,71 @@ public class ActivityPayment extends AppCompatActivity implements PaymentMethodN
         mPurchaseButton.setEnabled(true);
     }
 
+    private void clearNonce() {
+        mPaymentMethod.setVisibility(GONE);
+
+        mPurchaseButton.setEnabled(false);
+    }
+
+
+    private GooglePaymentRequest getGooglePaymentRequest() {
+        return new GooglePaymentRequest()
+                .transactionInfo(TransactionInfo.newBuilder()
+                        .setTotalPrice("1.00")
+                        .setCurrencyCode("USD")
+                        .setTotalPriceStatus(WalletConstants.TOTAL_PRICE_STATUS_FINAL)
+                        .build())
+                .emailRequired(true);
+    }
+
+    private void safelyCloseLoadingView() {
+        if (mLoading != null && mLoading.isShowing()) {
+            mLoading.dismiss();
+        }
+    }
+
+    protected void showDialog(String message) {
+        new AlertDialog.Builder(this)
+                .setMessage(message).setCancelable(false)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        CourseData courseData = new CourseData(getIntent().getIntExtra("id", 0), getIntent().getStringExtra("name"), true, "Purchased");
+
+                        ArrayList<CourseData> _list = new ArrayList<>();
+                        Gson gson = new Gson();
+                        String preData = preferences.getString(MyPreferences.LOGIN_USER_DATA);
+                        Type type = new TypeToken<UserData>() {
+                        }.getType();
+                        UserData data = gson.fromJson(preData, type);
+
+
+                        if (data.getCourseList() != null && data.getCourseList().size() > 0) {
+                            for (int i = 0; i < data.getCourseList().size(); i++) {
+                                CourseData d = data.getCourseList().get(i);
+                                _list.add(d);
+                            }
+                        }
+                        _list.add(courseData);
+                        addCourseToFirebase(_list,dialog);
+
+                        data.setCourseList(_list);
+                        preferences.saveString(MyPreferences.LOGIN_USER_DATA, new Gson().toJson(data));
+                        databaseHandler.updateCourseData(courseData);
+
+                    }
+                })
+                .show();
+    }
+
+    private void addCourseToFirebase(ArrayList<CourseData> list, DialogInterface dialog) {
+        DatabaseReference firebaseDatabase = FirebaseDatabase.getInstance().getReference();
+        firebaseDatabase.child(Constants.DB_USER_TABLE).child(EncodeString(preferences.getString(MyPreferences.Email))).child("purchasedCourse").setValue(list);
+
+        dialog.dismiss();
+        finish();
+    }
+    private  String EncodeString(String string) {
+        return string.replace(".", ",");
+    }
 }
