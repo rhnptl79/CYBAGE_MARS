@@ -29,6 +29,50 @@
             android:layout_centerInParent="true"/>
     </RelativeLayout>
 
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rv"
+        android:paddingBottom="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginHorizontal="15dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="JAVA Course"
+                android:id="@+id/tv_course_name"
+                android:layout_marginTop="15dp"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_course_id"
+                android:text="Course Id:- 123344"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Fees:- $100"
+                android:id="@+id/tv_fee"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tax:- $10"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
 
 
 </LinearLayout>
