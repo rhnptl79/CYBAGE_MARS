@@ -18,6 +18,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.marsapp.data.CourseContentData;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
