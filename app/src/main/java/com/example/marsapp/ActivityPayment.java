@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
 public class ActivityPayment extends AppCompatActivity implements PaymentMethodNonceCreatedListener,
@@ -150,6 +152,132 @@ public class ActivityPayment extends AppCompatActivity implements PaymentMethodN
         return threeDSecureRequest;
     }
 
+    public void purchase(View v) {
 
+        showDialog("Item purchased successfully!!");
+
+        mPurchased = true;
+    }
+
+    @Override
+    public void onResult(DropInResult result) {
+        if (result.getPaymentMethodType() == null) {
+            mAddPaymentMethodButton.setVisibility(VISIBLE);
+        } else {
+            mAddPaymentMethodButton.setVisibility(GONE);
+
+            mPaymentMethodType = result.getPaymentMethodType();
+
+            mPaymentMethodIcon.setImageResource(result.getPaymentMethodType().getDrawable());
+            if (result.getPaymentMethodNonce() != null) {
+                displayResult(result.getPaymentMethodNonce(), result.getDeviceData());
+            }
+
+            mPurchaseButton.setEnabled(true);
+        }
+    }
+
+    @Override
+    public void onPaymentMethodNonceCreated(PaymentMethodNonce paymentMethodNonce) {
+//        super.onPaymentMethodNonceCreated(paymentMethodNonce);
+        displayResult(paymentMethodNonce, null);
+        safelyCloseLoadingView();
+
+        if (mShouldMakePurchase) {
+            purchase(null);
+        }
+    }
+
+    @Override
+    public void onCancel(int requestCode) {
+
+        safelyCloseLoadingView();
+
+        mShouldMakePurchase = false;
+    }
+
+    @Override
+    public void onError(Exception error) {
+
+
+        safelyCloseLoadingView();
+
+        mShouldMakePurchase = false;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        safelyCloseLoadingView();
+
+        if (resultCode == RESULT_OK) {
+            DropInResult result = data.getParcelableExtra(DropInResult.EXTRA_DROP_IN_RESULT);
+            displayResult(result.getPaymentMethodNonce(), result.getDeviceData());
+            mPurchaseButton.setEnabled(true);
+        } else if (resultCode != RESULT_CANCELED) {
+            safelyCloseLoadingView();
+//                showDialog(((Exception) data.getSerializableExtra(DropInActivity.EXTRA_ERROR))
+//                        .getMessage());
+        }
+    }
+
+
+    protected void reset() {
+        mPurchaseButton.setEnabled(false);
+
+        mAddPaymentMethodButton.setVisibility(GONE);
+
+        clearNonce();
+    }
+
+
+    private void displayResult(PaymentMethodNonce paymentMethodNonce, String deviceData) {
+        mNonce = paymentMethodNonce;
+        mPaymentMethodType = PaymentMethodType.forType(mNonce);
+
+        mPaymentMethodIcon.setImageResource(PaymentMethodType.forType(mNonce).getDrawable());
+        mPaymentMethodTitle.setText(paymentMethodNonce.getTypeLabel());
+        mPaymentMethodDescription.setText(paymentMethodNonce.getDescription());
+        mPaymentMethod.setVisibility(VISIBLE);
+
+//            mNonceString.setText("NOnence" + ": " + mNonce.getNonce());
+//            mNonceString.setVisibility(VISIBLE);
+
+        String details = "";
+        if (mNonce instanceof CardNonce) {
+            CardNonce cardNonce = (CardNonce) mNonce;
+
+            details = "Card Last Two: " + cardNonce.getLastTwo() + "\n";
+            details += "3DS isLiabilityShifted: " + cardNonce.getThreeDSecureInfo().isLiabilityShifted() + "\n";
+            details += "3DS isLiabilityShiftPossible: " + cardNonce.getThreeDSecureInfo().isLiabilityShiftPossible();
+        } else if (mNonce instanceof PayPalAccountNonce) {
+            PayPalAccountNonce paypalAccountNonce = (PayPalAccountNonce) mNonce;
+
+            details = "First name: " + paypalAccountNonce.getFirstName() + "\n";
+            details += "Last name: " + paypalAccountNonce.getLastName() + "\n";
+            details += "Email: " + paypalAccountNonce.getEmail() + "\n";
+            details += "Phone: " + paypalAccountNonce.getPhone() + "\n";
+            details += "Payer id: " + paypalAccountNonce.getPayerId() + "\n";
+            details += "Client metadata id: " + paypalAccountNonce.getClientMetadataId() + "\n";
+            details += "Billing address: " + "sdsdsdsdsd" + "\n";
+            details += "Shipping address: " + "formatAddress(paypalAccountNonce.getShippingAddress()";
+        } else if (mNonce instanceof VenmoAccountNonce) {
+            VenmoAccountNonce venmoAccountNonce = (VenmoAccountNonce) mNonce;
+
+            details = "Username: " + venmoAccountNonce.getUsername();
+        } else if (mNonce instanceof GooglePaymentCardNonce) {
+            GooglePaymentCardNonce googlePaymentCardNonce = (GooglePaymentCardNonce) mNonce;
+
+            details = "Underlying Card Last Two: " + googlePaymentCardNonce.getLastTwo() + "\n";
+            details += "Email: " + googlePaymentCardNonce.getEmail() + "\n";
+            details += "Billing address: " + "formatAddress(googlePaymentCardNonce.getBillingAddress()) " + "\n";
+            details += "Shipping address: " + "formatAddress(googlePaymentCardNonce.getShippingAddress())";
+        }
+
+
+        mAddPaymentMethodButton.setVisibility(GONE);
+        mPurchaseButton.setEnabled(true);
+    }
 
 }
