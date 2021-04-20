@@ -2,12 +2,20 @@ package com.example.marsapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import java.io.File;
+import java.io.IOException;
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -35,6 +43,57 @@ public class SignupActivity extends AppCompatActivity {
         btn_signup = findViewById(R.id.btn_signup);
         add_image = findViewById(R.id.add_image);
         loading_view = findViewById(R.id.loading_view);
+        preferences = new MyPreferences(this);
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        btn_signup.setOnClickListener(v -> {
+            if (imagePath.equalsIgnoreCase("")) {
+                showToast("Please select image!!");
+                return;
+            }
+            if (Validation.isEmptyData(et_f_name)) {
+                if (Validation.isEmptyData(et_l_name)) {
+                    if (Validation.isEmptyData(et_email)) {
+                        if (Validation.isEmptyData(et_password)) {
+                            if (Validation.isEmptyData(et_con_password)) {
+                                if (Validation.isValidEmail(et_email)) {
+                                    if (Validation.isPasswordMatch(et_password, et_con_password, SignupActivity.this)) {
+                                        storagePics();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        tv_signup.setOnClickListener(v -> {
+            startActivity(new Intent(SignupActivity.this, LoginActivity.class));
+        });
+
+        add_image.setOnClickListener(v -> {
+            choosePhotoHelper = ChoosePhotoHelper.with(SignupActivity.this)
+                    .asFilePath()
+                    .build(photo -> {
+                        Log.d("Picc", photo);
+                        Uri myUri = Uri.fromFile(new File(photo));
+                        preferences.saveString(MyPreferences.USER_IMAGE,photo);
+                        try {
+                            Bitmap oribitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), myUri);
+                            add_image.setImageBitmap(oribitmap);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+//                        Glide.with(SignupActivity.this)
+//                                .load(photo)
+//                                .into(add_image);
+                        imagePath = photo;
+
+//                        storePicss();
+                    });
+
+            choosePhotoHelper.showChooser();
+        });
 
     }
 }
