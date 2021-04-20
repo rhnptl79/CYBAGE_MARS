@@ -42,5 +42,21 @@ public class ActivityPayment extends AppCompatActivity implements PaymentMethodN
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment);
+        mPaymentMethod = findViewById(R.id.payment_method);
+        mPaymentMethodIcon = findViewById(R.id.payment_method_icon);
+        mPaymentMethodTitle = findViewById(R.id.payment_method_title);
+        mPaymentMethodDescription = findViewById(R.id.payment_method_description);
+        tv_course_name = findViewById(R.id.tv_course_name);
+        tv_course_id = findViewById(R.id.tv_course_id);
+        tv_fee = findViewById(R.id.tv_fee);
+        tv_total_amout = findViewById(R.id.tv_total_amout);
+        btn_back = findViewById(R.id.btn_back);
+        preferences = new MyPreferences(this);
+        databaseHandler = new DatabaseHandler(this);
+        tv_course_name.setText("Course Name:- " + getIntent().getStringExtra("name"));
+        tv_course_id.setText("Course Id:- " + getIntent().getIntExtra("id", 0));
+        tv_fee.setText("Course Fees:- " + getIntent().getStringExtra("fees"));
+        int fee = Integer.parseInt(getIntent().getStringExtra("fees")) + 10;
+        tv_total_amout.setText("Total Amount:- $" + fee);
     }
 }
