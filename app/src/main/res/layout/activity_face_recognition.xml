@@ -12,7 +12,7 @@
         android:layout_centerHorizontal="true"
         android:id="@+id/title"
         android:text="Face Verfication"
-        android:textColor="@color/colorAccent"
+        android:textColor="#eadfcc"
         android:layout_marginTop="30dp"
         android:textSize="30dp"
         android:textStyle="bold"/>
@@ -23,7 +23,7 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/title"
         android:text="Result : "
-        android:textColor="@color/colorAccent"
+        android:textColor="#eadfcc"
         android:layout_marginTop="30dp"
         android:textSize="25dp"
         android:textStyle="bold"/>
@@ -37,7 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Original Image"
-            android:textColor="@color/colorAccent"
+            android:textColor="#eadfcc"
             android:textStyle="bold"
             android:layout_marginBottom="20dp"
             android:layout_marginStart="30dp"
@@ -47,7 +47,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Test Image"
-            android:textColor="@color/colorAccent"
+            android:textColor="#eadfcc"
             android:layout_marginBottom="20dp"
             android:textStyle="bold"
             android:layout_marginStart="90dp"
@@ -86,7 +86,7 @@
         android:text="verify"
         android:layout_margin="50dp"
         android:textColor="#fff"
-        android:background="@color/colorAccent"
+        android:background="#eadfcc"
         android:layout_centerHorizontal="true"/>
 
 </RelativeLayout>
