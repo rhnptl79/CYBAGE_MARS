@@ -1,22 +1,28 @@
 package com.example.marsapp;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
+import java.util.List;
 
 public class ActivityFaceRecognition extends AppCompatActivity {
 
@@ -143,4 +149,64 @@ public class ActivityFaceRecognition extends AppCompatActivity {
     private TensorOperator getPreprocessNormalizeOp() {
         return new NormalizeOp(IMAGE_MEAN, IMAGE_STD);
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode==12 && resultCode==RESULT_OK && data!=null) {
+            imageuri = data.getData();
+            try {
+                oribitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageuri);
+                oriImage.setImageBitmap(oribitmap);
+                face_detector(oribitmap,"original");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if(requestCode==13 && resultCode==RESULT_OK && data!=null) {
+            imageuri = data.getData();
+            try {
+                testbitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageuri);
+                testImage.setImageBitmap(testbitmap);
+                face_detector(testbitmap,"test");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void face_detector(final Bitmap bitmap, final String imagetype){
+
+        final InputImage image = InputImage.fromBitmap(bitmap,0);
+        FaceDetector detector = FaceDetection.getClient();
+        detector.process(image)
+                .addOnSuccessListener(
+                        new OnSuccessListener<List<Face>>() {
+                            @Override
+                            public void onSuccess(List<Face> faces) {
+                                // Task completed successfully
+                                for (Face face : faces) {
+                                    Rect bounds = face.getBoundingBox();
+                                    cropped = Bitmap.createBitmap(bitmap, bounds.left, bounds.top, bounds.width(), bounds.height());
+                                    get_embaddings(cropped,imagetype);
+                                }
+                            }
+
+                        })
+                .addOnFailureListener(
+                        new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                // Task failed with an exception
+                                Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
+                            }
+                        });
+    }
+
+
+
+
+
 }
