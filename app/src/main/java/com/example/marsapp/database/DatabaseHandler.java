@@ -1,5 +1,6 @@
 package com.example.marsapp.database;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -45,6 +46,24 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         // Create tables again
 
         onCreate(db);
+    }
+    public void deleteAllTable(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_COURSE, null, null);
+        db.delete(TABLE_CONTENT, null, null);
+    }
+    //Add Course
+    public void addCourse(CourseData data){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(KEY_COURSE_NAME, data.getCourseName());
+        values.put(KEY_COURSE_IS_PAID, String.valueOf(data.isPaid()));
+        values.put(KEY_COURSE_FEE, data.getCourseFee());
+
+        // Inserting Row
+        db.insert(TABLE_COURSE, null, values);
+        db.close();
     }
 
 }
