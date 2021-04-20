@@ -6,6 +6,8 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
+import java.nio.ByteBuffer;
+
 public class MLKitVisionImage {
 
     private static final String TAG = "MLKIT";
@@ -23,6 +25,33 @@ public class MLKitVisionImage {
         // [START image_from_media_image]
         InputImage image = InputImage.fromMediaImage(mediaImage, rotation);
         // [END image_from_media_image]
+    }
+
+    private void imageFromBuffer(ByteBuffer byteBuffer, int rotationDegrees) {
+        // [START set_metadata]
+        // TODO How do we document the FrameMetadata developers need to implement?
+        // [END set_metadata]
+
+        // [START image_from_buffer]
+        InputImage image = InputImage.fromByteBuffer(byteBuffer,
+                /* image width */ 480,
+                /* image height */ 360,
+                rotationDegrees,
+                InputImage.IMAGE_FORMAT_NV21 // or IMAGE_FORMAT_YV12
+        );
+        // [END image_from_buffer]
+    }
+
+    private void imageFromArray(byte[] byteArray, int rotation) {
+        // [START image_from_array]
+        InputImage image = InputImage.fromByteArray(
+                byteArray,
+                /* image width */480,
+                /* image height */360,
+                rotation,
+                InputImage.IMAGE_FORMAT_NV21 // or IMAGE_FORMAT_YV12
+        );
+        // [END image_from_array]
     }
 
 }
