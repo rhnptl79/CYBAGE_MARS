@@ -1,11 +1,16 @@
 package com.example.marsapp.mlkit;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.media.Image;
+import android.net.Uri;
 import android.os.Build;
+import android.util.SparseIntArray;
+import android.view.Surface;
 
 import androidx.annotation.RequiresApi;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
 
 public class MLKitVisionImage {
@@ -52,6 +57,26 @@ public class MLKitVisionImage {
                 InputImage.IMAGE_FORMAT_NV21 // or IMAGE_FORMAT_YV12
         );
         // [END image_from_array]
+    }
+
+    private void imageFromPath(Context context, Uri uri) {
+        // [START image_from_path]
+        InputImage image;
+        try {
+            image = InputImage.fromFilePath(context, uri);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // [END image_from_path]
+    }
+
+    // [START get_rotation]
+    private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
+    static {
+        ORIENTATIONS.append(Surface.ROTATION_0, 0);
+        ORIENTATIONS.append(Surface.ROTATION_90, 90);
+        ORIENTATIONS.append(Surface.ROTATION_180, 180);
+        ORIENTATIONS.append(Surface.ROTATION_270, 270);
     }
 
 }
