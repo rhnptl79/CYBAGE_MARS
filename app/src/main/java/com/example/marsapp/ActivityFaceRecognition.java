@@ -207,6 +207,27 @@ public class ActivityFaceRecognition extends AppCompatActivity {
 
 
 
+    public void get_embaddings(Bitmap bitmap,String imagetype){
 
+        TensorImage inputImageBuffer;
+        float[][] embedding = new float[1][128];
+
+        int imageTensorIndex = 0;
+        int[] imageShape = tflite.getInputTensor(imageTensorIndex).shape(); // {1, height, width, 3}
+        imageSizeY = imageShape[1];
+        imageSizeX = imageShape[2];
+        DataType imageDataType = tflite.getInputTensor(imageTensorIndex).dataType();
+
+        inputImageBuffer = new TensorImage(imageDataType);
+
+        inputImageBuffer = loadImage(bitmap,inputImageBuffer);
+
+        tflite.run(inputImageBuffer.getBuffer(),embedding);
+
+        if(imagetype.equals("original"))
+            ori_embedding=embedding;
+        else if (imagetype.equals("test"))
+            test_embedding=embedding;
+    }
 
 }
