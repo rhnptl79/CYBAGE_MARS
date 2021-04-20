@@ -38,7 +38,7 @@ public class SignupActivity extends AppCompatActivity {
     String pathImageFirebase = "";
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
         et_f_name = findViewById(R.id.et_f_name);
