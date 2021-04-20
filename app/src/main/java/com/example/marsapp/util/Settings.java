@@ -62,4 +62,46 @@ public class Settings {
         }
     }
 
+    public static String getCustomerId(Context context) {
+        return getPreferences(context).getString("customer", null);
+    }
+
+    public static String getMerchantAccountId(Context context) {
+        return getPreferences(context).getString("merchant_account", null);
+    }
+
+    public static boolean shouldCollectDeviceData(Context context) {
+        return getPreferences(context).getBoolean("collect_device_data", false);
+    }
+
+    public static String getThreeDSecureMerchantAccountId(Context context) {
+        if (isThreeDSecureEnabled(context) && getEnvironment(context) == 1) {
+            return "test_AIB";
+        } else {
+            return null;
+        }
+    }
+
+    public static String getUnionPayMerchantAccountId(Context context) {
+        if (getEnvironment(context) == 0) {
+            return "fake_switch_usd";
+        } else {
+            return null;
+        }
+    }
+
+    public static boolean useTokenizationKey(Context context) {
+        return getPreferences(context).getBoolean("tokenization_key", false);
+    }
+
+    public static String getEnvironmentTokenizationKey(Context context) {
+        int environment = getEnvironment(context);
+        if (environment == 0) {
+            return SANDBOX_TOKENIZATION_KEY;
+        } else if (environment == 1) {
+            return PRODUCTION_TOKENIZATION_KEY;
+        } else {
+            return "";
+        }
+    }
 }
