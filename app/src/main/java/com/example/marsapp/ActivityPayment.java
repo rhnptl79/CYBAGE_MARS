@@ -104,4 +104,52 @@ public class ActivityPayment extends AppCompatActivity implements PaymentMethodN
             outState.putParcelable(KEY_NONCE, mNonce);
         }
     }
+
+    public void launchDropIn(View v) {
+        DropInRequest dropInRequest = new DropInRequest()
+                .clientToken(mAuthorization)
+                .requestThreeDSecureVerification(Settings.isThreeDSecureEnabled(this))
+                .collectDeviceData(Settings.shouldCollectDeviceData(this))
+                .googlePaymentRequest(getGooglePaymentRequest())
+                .maskCardNumber(true)
+                .maskSecurityCode(true)
+                .allowVaultCardOverride(Settings.isSaveCardCheckBoxVisible(this))
+                .vaultCard(Settings.defaultVaultSetting(this))
+                .vaultManager(Settings.isVaultManagerEnabled(this))
+                .cardholderNameStatus(Settings.getCardholderNameStatus(this));
+        if (Settings.isThreeDSecureEnabled(this)) {
+            dropInRequest.threeDSecureRequest(demoThreeDSecureRequest());
+        }
+
+        startActivityForResult(dropInRequest.getIntent(this), DROP_IN_REQUEST);
+    }
+
+    private ThreeDSecureRequest demoThreeDSecureRequest() {
+        ThreeDSecurePostalAddress billingAddress = new ThreeDSecurePostalAddress()
+                .givenName("Jill")
+                .surname("Doe")
+                .phoneNumber("5551234567")
+                .streetAddress("555 Smith St")
+                .extendedAddress("#2")
+                .locality("Chicago")
+                .region("IL")
+                .postalCode("12345")
+                .countryCodeAlpha2("US");
+
+        ThreeDSecureAdditionalInformation additionalInformation = new ThreeDSecureAdditionalInformation()
+                .accountId("account-id");
+
+        ThreeDSecureRequest threeDSecureRequest = new ThreeDSecureRequest()
+                .amount("1.00")
+                .versionRequested(Settings.getThreeDSecureVersion(this))
+                .email("test@email.com")
+                .mobilePhoneNumber("3125551234")
+                .billingAddress(billingAddress)
+                .additionalInformation(additionalInformation);
+
+        return threeDSecureRequest;
+    }
+
+
+
 }
