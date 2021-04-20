@@ -107,4 +107,39 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return data;
     }
 
+    // code to update the single note
+    public int updateCourseData(CourseData data) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_COURSE_NAME, data.getCourseName());
+        values.put(KEY_COURSE_IS_PAID, String.valueOf(data.isPaid()));
+        values.put(KEY_COURSE_FEE, data.getCourseFee());
+
+        // updating row
+        return db.update(TABLE_COURSE, values, KEY_COURSE_NAME + " = ?",
+                new String[] { data.getCourseName() });
+    }
+
+
+    public List<CourseContentData> getAllCourseContent(String courseId) {
+        List<CourseContentData> data = new ArrayList<CourseContentData>();
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + TABLE_CONTENT+" WHERE "+KEY_COURSE_ID+"="+courseId;;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                CourseContentData courseContentData=new CourseContentData(Integer.parseInt(cursor.getString(3)),cursor.getString(1),cursor.getString(2));
+                // Adding category to list
+                data.add(courseContentData);
+            } while (cursor.moveToNext());
+        }
+
+        // return category list
+        return data;
+    }
 }
