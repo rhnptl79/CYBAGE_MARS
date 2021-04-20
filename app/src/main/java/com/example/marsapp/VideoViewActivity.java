@@ -46,6 +46,5 @@ public class VideoViewActivity extends AppCompatActivity {
                 }
             }
         }.extract(youtubeLink, true, true);
-
     }
 }
