@@ -5,11 +5,14 @@ import androidx.cardview.widget.CardView;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+
+import static android.view.View.VISIBLE;
 
 public class ActivityPayment extends AppCompatActivity implements PaymentMethodNonceCreatedListener,
         BraintreeCancelListener, BraintreeErrorListener, DropInResult.DropInResultListener{
@@ -41,7 +44,7 @@ public class ActivityPayment extends AppCompatActivity implements PaymentMethodN
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_payment);
+        setContentView(R.layout.main_activity_test);
         mPaymentMethod = findViewById(R.id.payment_method);
         mPaymentMethodIcon = findViewById(R.id.payment_method_icon);
         mPaymentMethodTitle = findViewById(R.id.payment_method_title);
@@ -58,5 +61,47 @@ public class ActivityPayment extends AppCompatActivity implements PaymentMethodN
         tv_fee.setText("Course Fees:- " + getIntent().getStringExtra("fees"));
         int fee = Integer.parseInt(getIntent().getStringExtra("fees")) + 10;
         tv_total_amout.setText("Total Amount:- $" + fee);
+        mAddPaymentMethodButton = findViewById(R.id.add_payment_method);
+        mPurchaseButton = findViewById(R.id.purchase);
+
+        if (savedInstanceState != null) {
+            if (savedInstanceState.containsKey(KEY_NONCE)) {
+                mNonce = savedInstanceState.getParcelable(KEY_NONCE);
+            }
+        }
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (mPurchased) {
+            mPurchased = false;
+            clearNonce();
+
+            try {
+                if (ClientToken.fromString(mAuthorization) instanceof ClientToken) {
+                    DropInResult.fetchDropInResult(this, mAuthorization, this);
+                } else {
+                    mAddPaymentMethodButton.setVisibility(VISIBLE);
+                }
+            } catch (InvalidArgumentException e) {
+                mAddPaymentMethodButton.setVisibility(VISIBLE);
+            }
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (mNonce != null) {
+            outState.putParcelable(KEY_NONCE, mNonce);
+        }
     }
 }
