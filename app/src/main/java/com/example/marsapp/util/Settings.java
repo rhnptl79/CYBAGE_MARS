@@ -104,4 +104,50 @@ public class Settings {
             return "";
         }
     }
+
+    public static boolean isPayPalSignatureVerificationDisabled(Context context) {
+        return getPreferences(context).getBoolean("paypal_disable_signature_verification", true);
+    }
+
+    public static boolean useHardcodedPayPalConfiguration(Context context) {
+        return getPreferences(context).getBoolean("paypal_use_hardcoded_configuration", false);
+    }
+
+    public static boolean isThreeDSecureEnabled(Context context) {
+        return getPreferences(context).getBoolean("enable_three_d_secure", false);
+    }
+
+    public static boolean isThreeDSecureRequired(Context context) {
+        return getPreferences(context).getBoolean("require_three_d_secure", true);
+    }
+
+    public static String getThreeDSecureVersion(Context context) {
+        return getPreferences(context).getString("three_d_secure_version", ThreeDSecureRequest.VERSION_2);
+    }
+
+    public static boolean isVaultManagerEnabled(Context context) {
+        return getPreferences(context).getBoolean("enable_vault_manager", false);
+    }
+
+    public static int getCardholderNameStatus(Context context) {
+        String status = getPreferences(context).getString("cardholder_name_status", "Disabled");
+
+        switch (status) {
+            case "Optional":
+                return CardForm.FIELD_OPTIONAL;
+            case "Required":
+                return CardForm.FIELD_REQUIRED;
+            case "Disabled":
+            default:
+                return CardForm.FIELD_DISABLED;
+        }
+    }
+
+    public static boolean isSaveCardCheckBoxVisible(Context context) {
+        return getPreferences(context).getBoolean("save_card_checkbox_visible", false);
+    }
+
+    public static boolean defaultVaultSetting(Context context) {
+        return getPreferences(context).getBoolean("save_card_checkbox_default_value", true);
+    }
 }
