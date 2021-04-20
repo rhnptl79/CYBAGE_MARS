@@ -44,4 +44,5 @@ public class UserData {
     public void setCourseList(ArrayList<CourseData> courseList) {
         this.courseList = courseList;
     }
+
 }
