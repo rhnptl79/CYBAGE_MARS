@@ -2,8 +2,12 @@ package com.example.marsapp.database;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 
@@ -64,6 +68,43 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         // Inserting Row
         db.insert(TABLE_COURSE, null, values);
         db.close();
+    }
+
+    //Add Course
+    public void addCourseContent(CourseContentData data){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(KEY_VIDEO_NAME, data.getName());
+        values.put(KEY_VIDEO_URL, String.valueOf(data.getUrl()));
+        values.put(KEY_COURSE_ID, String.valueOf(data.getCourseId()));
+
+        // Inserting Row
+        db.insert(TABLE_CONTENT, null, values);
+        db.close();
+    }
+
+    // code to get all contacts in a list view
+    public List<CourseData> getAllCourse() {
+        List<CourseData> data = new ArrayList<CourseData>();
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + TABLE_COURSE;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                CourseData courseData = new CourseData(Integer.parseInt(cursor.getString(0)),cursor.getString(1),Boolean.parseBoolean(cursor.getString(2)),cursor.getString(3));
+
+                // Adding category to list
+                data.add(courseData);
+            } while (cursor.moveToNext());
+        }
+
+        // return category list
+        return data;
     }
 
 }
