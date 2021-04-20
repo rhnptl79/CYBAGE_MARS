@@ -2,8 +2,10 @@ package com.example.marsapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -68,5 +70,57 @@ public class LoginActivity extends AppCompatActivity {
                         Log.v("LoginActivity", exception.getCause().toString());
                     }
                 });
+
+//Gmail LOgin
+
+        SignInButton signInButton = findViewById(R.id.sign_in_button);
+        signInButton.setSize(SignInButton.SIZE_STANDARD);
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        tv_signup.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, SignupActivity.class)));
+        btn_login.setOnClickListener(v -> {
+            if (Validation.isEmptyData(et_name)) {
+                if (Validation.isValidEmail(et_name)) {
+                    if (Validation.isEmptyData(et_password)) {
+                        signinUser(et_name.getText().toString());
+                    }
+                }
+            }
+        });
+
+        signInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signIn();
+            }
+        });
+        releaseKeyHash();
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
