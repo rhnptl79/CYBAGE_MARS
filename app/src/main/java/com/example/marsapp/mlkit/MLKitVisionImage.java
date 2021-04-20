@@ -13,7 +13,7 @@ import android.util.SparseIntArray;
 import android.view.Surface;
 
 import androidx.annotation.RequiresApi;
-
+import com.google.mlkit.vision.common.InputImage;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
