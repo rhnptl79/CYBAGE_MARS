@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -112,5 +113,29 @@ public class EntranceTestActivity extends AppCompatActivity {
         catch (WindowManager.BadTokenException e) {
             Log.d("ErrorMessage:",e.getMessage());
         }
+    }
+
+    private void startTimer(int Seconds) {
+
+        new CountDownTimer(Seconds * 1000 + 1000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                int seconds = (int) (millisUntilFinished / 1000);
+                int minutes = seconds / 60;
+                seconds = seconds % 60;
+                String time = String.format("%02d", minutes)
+                        + ":" + String.format("%02d", seconds);
+                if (time.equalsIgnoreCase("00:58")) {
+                    showNotification("Only "+time+" time left!","Please hurry!");
+                }
+                tv_time.setText("Time Left : " + time);
+            }
+
+            public void onFinish() {
+                tv_time.setText("done!");
+                btn_submit.performClick();
+            }
+
+        }.start();
     }
 }
