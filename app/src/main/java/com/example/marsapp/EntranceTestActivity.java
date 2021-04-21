@@ -1,5 +1,6 @@
 package com.example.marsapp;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
@@ -35,7 +36,7 @@ public class EntranceTestActivity extends AppCompatActivity {
     TextView tv_time;
     ImageView btn_back;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_entrance_test);
         rv_question = findViewById(R.id.rv_question);
