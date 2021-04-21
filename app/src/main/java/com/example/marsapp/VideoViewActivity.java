@@ -11,6 +11,10 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import at.huber.youtubeExtractor.VideoMeta;
+import at.huber.youtubeExtractor.YouTubeExtractor;
+import at.huber.youtubeExtractor.YtFile;
+
 public class VideoViewActivity extends AppCompatActivity {
     VideoView videoView;
     ImageView btn_back;

@@ -22,6 +22,8 @@ import com.example.marsapp.data.CourseData;
 import com.example.marsapp.data.UserData;
 import com.example.marsapp.database.DatabaseHandler;
 import com.example.marsapp.util.MyPreferences;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -67,7 +69,7 @@ public class CourseListActivity extends AppCompatActivity {
     }
     private void getUserData() {
         Gson gson = new Gson();
-
+    try {
         String preData = preferences.getString(MyPreferences.LOGIN_USER_DATA);
         Type type = new TypeToken<UserData>() {
         }.getType();
@@ -77,6 +79,10 @@ public class CourseListActivity extends AppCompatActivity {
                 databaseHandler.updateCourseData(userData.getCourseList().get(i));
             }
         }
+    }catch (NullPointerException e){
+        e.printStackTrace();
+    }
+
 
         data = new ArrayList<>();
         data.addAll(databaseHandler.getAllCourse());
