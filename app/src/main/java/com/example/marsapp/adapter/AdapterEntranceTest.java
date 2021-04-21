@@ -7,9 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.marsapp.R;
+import com.example.marsapp.data.EntranceTestData;
 
 import java.util.ArrayList;
 
@@ -75,4 +79,26 @@ public class AdapterEntranceTest extends RecyclerView.Adapter<AdapterEntranceTes
 
 
     }
+
+    public ArrayList<EntranceTestData> getData() {
+        return _qusData;
+    }
+
+    @Override
+    public int getItemCount() {
+        return _qusData.size();
+    }
+
+    public class MyViewHolder extends RecyclerView.ViewHolder {
+        RadioGroup rg_options;
+        TextView tv_question;
+
+        public MyViewHolder(@NonNull View itemView) {
+            super(itemView);
+            rg_options = itemView.findViewById(R.id.rg_options);
+            tv_question = itemView.findViewById(R.id.tv_question);
+
+        }
+    }
+
 }
