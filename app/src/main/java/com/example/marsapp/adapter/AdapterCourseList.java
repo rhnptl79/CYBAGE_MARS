@@ -11,6 +11,9 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.marsapp.CourseVideoListActivity;
+import com.example.marsapp.EntranceTestActivity;
+import com.example.marsapp.R;
 import com.example.marsapp.data.CourseData;
 
 import java.util.ArrayList;
