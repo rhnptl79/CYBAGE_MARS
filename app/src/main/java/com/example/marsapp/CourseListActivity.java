@@ -15,6 +15,7 @@ import com.example.marsapp.data.CourseData;
 import com.example.marsapp.database.DatabaseHandler;
 import com.example.marsapp.util.MyPreferences;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class CourseListActivity extends AppCompatActivity {
@@ -55,5 +56,22 @@ public class CourseListActivity extends AppCompatActivity {
                 dialogLogout("Are you sure you want to logout?");
             }
         });
+    }
+    private void getUserData() {
+        Gson gson = new Gson();
+
+        String preData = preferences.getString(MyPreferences.LOGIN_USER_DATA);
+        Type type = new TypeToken<UserData>() {
+        }.getType();
+        UserData userData = gson.fromJson(preData, type);
+        if (userData.getCourseList() != null) {
+            for (int i = 0; i < userData.getCourseList().size(); i++) {
+                databaseHandler.updateCourseData(userData.getCourseList().get(i));
+            }
+        }
+
+        data = new ArrayList<>();
+        data.addAll(databaseHandler.getAllCourse());
+        initView(data);
     }
 }
