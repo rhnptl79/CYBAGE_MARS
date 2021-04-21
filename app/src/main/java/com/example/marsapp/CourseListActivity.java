@@ -1,14 +1,20 @@
 package com.example.marsapp;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.example.marsapp.data.CourseData;
@@ -73,5 +79,40 @@ public class CourseListActivity extends AppCompatActivity {
         data = new ArrayList<>();
         data.addAll(databaseHandler.getAllCourse());
         initView(data);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        data = new ArrayList<>();
+        data.addAll(databaseHandler.getAllCourse());
+        initView(data);
+    }
+
+    private void initView(ArrayList<CourseData> data) {
+        adapter = new AdapterCourseList(this, data);
+        rv_course_list.setHasFixedSize(true);
+        rv_course_list.setLayoutManager(new LinearLayoutManager(this));
+        rv_course_list.setAdapter(adapter);
+    }
+
+    private void dialogLogout(String message) {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(CourseListActivity.this)
+                .setMessage(message).setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        preferences.saveBool(MyPreferences.IS_LOGIN, false);
+                        databaseHandler.deleteAllTable();
+                        startActivity(new Intent(CourseListActivity.this, LoginActivity.class));
+                        finishAffinity();
+                    }
+                });
+
+        try {
+            alertDialog.show();
+        } catch (WindowManager.BadTokenException e) {
+            Log.d("ErrorMessage:", e.getMessage());
+        }
     }
 }
