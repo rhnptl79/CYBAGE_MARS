@@ -1,6 +1,7 @@
 package com.example.marsapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
@@ -55,4 +56,19 @@ public class CourseVideoListActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        data=new ArrayList<>();
+        data.addAll(databaseHandler.getAllCourseContent(String.valueOf(getIntent().getIntExtra("id",0))));
+        initView(data);
+    }
+    private void initView(ArrayList<CourseContentData> data){
+        adapter = new AdapterCourseVideo(data,this);
+        rv_course_list.setHasFixedSize(true);
+        rv_course_list.setLayoutManager(new LinearLayoutManager(this));
+        rv_course_list.setAdapter(adapter);
+    }
+
 }
