@@ -17,7 +17,9 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import com.example.marsapp.adapter.AdapterCourseList;
 import com.example.marsapp.data.CourseData;
+import com.example.marsapp.data.UserData;
 import com.example.marsapp.database.DatabaseHandler;
 import com.example.marsapp.util.MyPreferences;
 

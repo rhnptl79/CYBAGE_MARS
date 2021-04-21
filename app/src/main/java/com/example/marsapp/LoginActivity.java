@@ -19,6 +19,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.marsapp.data.CourseContentData;
+import com.example.marsapp.data.CourseData;
+import com.example.marsapp.data.UserData;
+import com.example.marsapp.database.DatabaseHandler;
+import com.example.marsapp.util.MyPreferences;
+import com.example.marsapp.util.Validation;
 
 import org.json.JSONException;
 import org.json.JSONObject;

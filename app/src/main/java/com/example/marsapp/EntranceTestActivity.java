@@ -23,7 +23,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.marsapp.adapter.AdapterEntranceTest;
 import com.example.marsapp.data.EntranceTestData;
+import com.example.marsapp.util.MyTestData;
 
 import java.util.ArrayList;
 

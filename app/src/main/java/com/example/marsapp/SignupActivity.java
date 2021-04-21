@@ -18,6 +18,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.marsapp.util.MyPreferences;
+import com.example.marsapp.util.Validation;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,6 +39,11 @@ public class SignupActivity extends AppCompatActivity {
     ChoosePhotoHelper choosePhotoHelper;
     String imagePath = "";
     String pathImageFirebase = "";
+    public static String EncodeString(String string) {
+        return string.replace(".", ",");
+    }
+
+    MyPreferences preferences;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -159,6 +167,8 @@ public class SignupActivity extends AppCompatActivity {
         if (choosePhotoHelper != null)
             choosePhotoHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
+
+
 
     private void addUserInfoToFirebase(String child) {
         DatabaseReference firebaseDatabase = FirebaseDatabase.getInstance().getReference();

@@ -18,6 +18,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.marsapp.util.MyPreferences;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.MappedByteBuffer;

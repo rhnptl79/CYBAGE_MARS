@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.example.marsapp.adapter.AdapterCourseVideo;
 import com.example.marsapp.data.CourseContentData;
 import com.example.marsapp.database.DatabaseHandler;
 

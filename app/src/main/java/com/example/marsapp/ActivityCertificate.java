@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.marsapp.util.MyPreferences;
+
 public class ActivityCertificate extends AppCompatActivity {
 
     TextView tv_name,tv_course1,tv_course2,tv_date;
