@@ -220,4 +220,85 @@ public class MyTestData {
         list.add(new EntranceTestData("Which of the following is true about the anonymous inner class?", "D", "", q3Option));
         return list;
     }
+
+    private static ArrayList<EntranceTestData> getJavaScriptFinalQuestion() {
+        ArrayList<EntranceTestData> list = new ArrayList<>();
+        ArrayList<String> q1Option = new ArrayList<>();
+        q1Option.add("Prints an exception error");
+        q1Option.add("Prints an overflow error");
+        q1Option.add("Displays \"Infinity\"");
+        q1Option.add("Prints the value as such");
+
+        ArrayList<String> q2Option = new ArrayList<>();
+        q2Option.add("Syntax error");
+        q2Option.add("Missing of semicolons");
+        q2Option.add("Division by zero");
+        q2Option.add("Missing of Bracket");
+
+        ArrayList<String> q3Option = new ArrayList<>();
+        q3Option.add("toExponential()");
+        q3Option.add("toFixed()");
+        q3Option.add("toPrecision()");
+        q3Option.add("toLocaleString()");
+
+
+        list.add(new EntranceTestData("When there is an indefinite or an infinite value during an arithmetic computation in a program, then JavaScript prints?", "C", "", q1Option));
+        list.add(new EntranceTestData("In the JavaScript, which one of the following is not considered as an error?", "C", "", q2Option));
+        list.add(new EntranceTestData("Which of the following givenfunctions of the Number Object formats a number with a different number of digits to the right of the decimal?", "C", "", q3Option));
+        return list;
+    }
+
+    private static ArrayList<EntranceTestData> getMySqlFinalQuestion() {
+        ArrayList<EntranceTestData> list = new ArrayList<>();
+        ArrayList<String> q1Option = new ArrayList<>();
+        q1Option.add("Demand and Supply Responsiveness");
+        q1Option.add("Storage, Functionality Responsiveness to queries");
+        q1Option.add("Transaction Responsiveness");
+        q1Option.add("None of these");
+
+        ArrayList<String> q2Option = new ArrayList<>();
+        q2Option.add("DEFAULT");
+        q2Option.add("INDEX");
+        q2Option.add("NATIONAL");
+        q2Option.add("NULL");
+
+        ArrayList<String> q3Option = new ArrayList<>();
+        q3Option.add("Data Mining");
+        q3Option.add("Data Management");
+        q3Option.add("Meta Data");
+        q3Option.add("Database");
+
+
+        list.add(new EntranceTestData("Data Warehouse provides: ", "B", "", q1Option));
+        list.add(new EntranceTestData("The … attribute used in MySQL data type is offered as an aid in the database compatibility.", "C", "", q2Option));
+        list.add(new EntranceTestData("----- is the process of extracting previously non known valid and actionable information from large data to make crucial business and strategic decisions.", "A", "", q3Option));
+        return list;
+    }
+
+    private static ArrayList<EntranceTestData> getPhpFinalQuestion() {
+        ArrayList<EntranceTestData> list = new ArrayList<>();
+        ArrayList<String> q1Option = new ArrayList<>();
+        q1Option.add("Client side scripting");
+        q1Option.add("Server side scripting");
+        q1Option.add("Both A and B");
+        q1Option.add("None of the above");
+
+        ArrayList<String> q2Option = new ArrayList<>();
+        q2Option.add("into_array()");
+        q2Option.add("inend_array()");
+        q2Option.add("array_push()");
+        q2Option.add("array_push()");
+
+        ArrayList<String> q3Option = new ArrayList<>();
+        q3Option.add("choot()");
+        q3Option.add("change_root()");
+        q3Option.add("cd_root()");
+        q3Option.add("cd_r()");
+
+
+        list.add(new EntranceTestData("The script that executes at the browser side is called___", "A", "", q1Option));
+        list.add(new EntranceTestData("Which in-built function will add a value to the end of an array?", "C", "", q2Option));
+        list.add(new EntranceTestData("Which of the following function is used to change the root directory in PHP?", "A", "", q3Option));
+        return  list;
+    }
 }
