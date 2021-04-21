@@ -100,5 +100,43 @@ public class MyTestData {
         return list;
     }
 
+    private static ArrayList<EntranceTestData> getJavaScriptEntranceQuestion() {
+        ArrayList<EntranceTestData> list = new ArrayList<>();
+        ArrayList<String> q1Option = new ArrayList<>();
+        q1Option.add("Object-Oriented");
+        q1Option.add("Object-Based");
+        q1Option.add("Assembly-language");
+        q1Option.add("High-level");
 
+        ArrayList<String> q2Option = new ArrayList<>();
+        q2Option.add("Alternative to if-else");
+        q2Option.add("Switch statement");
+        q2Option.add("If-then-else statement");
+        q2Option.add("immediate if");
+
+
+        list.add(new EntranceTestData("Which type of JavaScript language is?", "B", "", q1Option));
+        list.add(new EntranceTestData("Which one of the following also known as Conditional Expression?", "D", "", q2Option));
+        return list;
+    }
+
+    private static ArrayList<EntranceTestData> getMySqlEntranceQuestion() {
+        ArrayList<EntranceTestData> list = new ArrayList<>();
+        ArrayList<String> q1Option = new ArrayList<>();
+        q1Option.add("DATE");
+        q1Option.add("TIME");
+        q1Option.add("DATETIME");
+        q1Option.add("TIMESTAMP");
+
+        ArrayList<String> q2Option = new ArrayList<>();
+        q2Option.add("TEXT");
+        q2Option.add("TINYTEXT");
+        q2Option.add("CHAR");
+        q2Option.add("TINYCHAR");
+
+
+        list.add(new EntranceTestData("The … data type is responsible for sorting a combination of date and time information?", "C", "", q1Option));
+        list.add(new EntranceTestData("The … is the data type of MySQL that supports a maximum length of 255 characters.", "B", "", q2Option));
+        return list;
+    }
 }
