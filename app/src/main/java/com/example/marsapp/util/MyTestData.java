@@ -139,4 +139,85 @@ public class MyTestData {
         list.add(new EntranceTestData("The … is the data type of MySQL that supports a maximum length of 255 characters.", "B", "", q2Option));
         return list;
     }
+
+    private static ArrayList<EntranceTestData> getCssFinalQuestion() {
+        ArrayList<EntranceTestData> list = new ArrayList<>();
+        ArrayList<String> q1Option = new ArrayList<>();
+        q1Option.add("<style src = example.css>");
+        q1Option.add("<style src = \"example.css\" >");
+        q1Option.add("<stylesheet> example.css </stylesheet>");
+        q1Option.add("<link rel=\"stylesheet\" type=\"text/css\" href=\"example.css\">");
+
+        ArrayList<String> q2Option = new ArrayList<>();
+        q2Option.add("text-decoration: line-through");
+        q2Option.add("text-decoration: none");
+        q2Option.add("text-decoration: overline");
+        q2Option.add("text-decoration: underline");
+        ArrayList<String> q3Option = new ArrayList<>();
+        q3Option.add("visibility property");
+        q3Option.add("background-clip property");
+        q3Option.add("clip-path property");
+        q3Option.add("None of the above");
+
+
+        list.add(new EntranceTestData("Which of the following is the correct syntax for referring the external style sheet?", "D", "", q1Option));
+        list.add(new EntranceTestData("The correct syntax to give a line over text is ", "C", "", q2Option));
+        list.add(new EntranceTestData("Which of the following CSS property creates a clipping region and specifies the visible area of the element?", "C", "", q3Option));
+        return list;
+    }
+
+
+
+    private static ArrayList<EntranceTestData> getHtmlFinalQuestion() {
+        ArrayList<EntranceTestData> list = new ArrayList<>();
+        ArrayList<String> q1Option = new ArrayList<>();
+        q1Option.add("<a href = \"www.javatpoint.com\"> javaTpoint.com </a>");
+        q1Option.add("<a url = \"www.javatpoint.com\" javaTpoint.com /a>");
+        q1Option.add("<a link = \"www.javatpoint.com\"> javaTpoint.com </a>");
+        q1Option.add("<a> www.javatpoint.com <javaTpoint.com /a>");
+
+        ArrayList<String> q2Option = new ArrayList<>();
+        q2Option.add("<imghref = \"jtp.png\" />");
+        q2Option.add("<imgurl = \"jtp.png\" />");
+        q2Option.add("<img link = \"jtp.png\" />");
+        q2Option.add("<imgsrc = \"jtp.png\" />");
+
+        ArrayList<String> q3Option = new ArrayList<>();
+        q3Option.add("<marquee bgcolor: \"red\">");
+        q3Option.add("<marquee bg-color = \"red\">");
+        q3Option.add("<marquee bgcolor = \"red\">");
+        q3Option.add("<marquee color = \"red\">");
+
+
+        list.add(new EntranceTestData("How to create a hyperlink in HTML?", "A", "", q1Option));
+        list.add(new EntranceTestData("How to insert an image in HTML?", "D", "", q2Option));
+        list.add(new EntranceTestData("How to add a background color in HTML?", "D", "", q3Option));
+        return list;
+    }
+
+    private static ArrayList<EntranceTestData> getJavaFinalQuestion() {
+        ArrayList<EntranceTestData> list = new ArrayList<>();
+        ArrayList<String> q1Option = new ArrayList<>();
+        q1Option.add("Unicode escape sequence");
+        q1Option.add("Octal escape");
+        q1Option.add("Hexadecimal");
+        q1Option.add("Line feed");
+
+        ArrayList<String> q2Option = new ArrayList<>();
+        q2Option.add("ABH8097");
+        q2Option.add("L990023");
+        q2Option.add("904423");
+        q2Option.add("0xnf029L");
+        ArrayList<String> q3Option = new ArrayList<>();
+        q3Option.add("It has only methods");
+        q3Option.add("Objects can't be created");
+        q3Option.add("It has a fixed class name");
+        q3Option.add("It has no class name");
+
+
+        list.add(new EntranceTestData("The \\u0021 article referred to as a?", "A", "", q1Option));
+        list.add(new EntranceTestData("Which of the following is a valid long literal?", "D", "", q2Option));
+        list.add(new EntranceTestData("Which of the following is true about the anonymous inner class?", "D", "", q3Option));
+        return list;
+    }
 }
