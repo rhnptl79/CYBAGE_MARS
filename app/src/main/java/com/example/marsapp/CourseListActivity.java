@@ -1,9 +1,14 @@
 package com.example.marsapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import com.example.marsapp.data.CourseData;
@@ -25,5 +30,30 @@ public class CourseListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_list);
+        rv_course_list = findViewById(R.id.rv_course_list);
+        tv_logOUt = findViewById(R.id.tv_logOUt);
+
+        databaseHandler = new DatabaseHandler(this);
+        preferences = new MyPreferences(this);
+
+        getUserData();
+
+        data = new ArrayList<>();
+        initView(data);
+
+        getUserData();
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION};
+            // REQUEST_CODE_LOCATION should be defined on your app level
+            ActivityCompat.requestPermissions(this, permissions, 101);
+        }
+
+        tv_logOUt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogLogout("Are you sure you want to logout?");
+            }
+        });
     }
 }
