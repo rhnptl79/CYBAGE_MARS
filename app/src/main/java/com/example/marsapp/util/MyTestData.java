@@ -290,7 +290,7 @@ public class MyTestData {
         q2Option.add("array_push()");
 
         ArrayList<String> q3Option = new ArrayList<>();
-        q3Option.add("choot()");
+        q3Option.add("chroot()");
         q3Option.add("change_root()");
         q3Option.add("cd_root()");
         q3Option.add("cd_r()");

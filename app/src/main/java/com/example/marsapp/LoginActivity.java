@@ -116,7 +116,7 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onError(FacebookException exception) {
                         // App code
-                        Log.v("LoginActivity", exception.getCause().toString());
+                        Log.v("LoginActivity", exception.getMessage());
                     }
                 });
 
@@ -362,7 +362,7 @@ public class LoginActivity extends AppCompatActivity {
     private void releaseKeyHash() {
         try {
             PackageInfo info = getPackageManager().getPackageInfo(
-                    "com.example.sampleapp",
+                    "com.example.marsapp",
                     PackageManager.GET_SIGNATURES);
             for (Signature signature : info.signatures) {
                 MessageDigest md = MessageDigest.getInstance("SHA");

@@ -111,6 +111,7 @@ public class CourseListActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         preferences.saveBool(MyPreferences.IS_LOGIN, false);
+                        preferences.saveString(MyPreferences.LOGIN_USER_DATA, "");
                         databaseHandler.deleteAllTable();
                         startActivity(new Intent(CourseListActivity.this, LoginActivity.class));
                         finishAffinity();
